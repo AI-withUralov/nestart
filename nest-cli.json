@@ -14,7 +14,7 @@
   "monorepo": true,
   "root": "apps/nestar-api",
   "projects": {
-    "nestar": {
+    "nestar-api": {
       "type": "application",
       "root": "apps/nestar-api",
       "entryFile": "main",
