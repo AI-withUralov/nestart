@@ -12,7 +12,7 @@ import { T } from './libs/types/common';
 @Module({
   imports:[
     ConfigModule.forRoot(),// env ni uqish uchun
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot({ // GraphQL API server xosil qiladi
       driver: ApolloDriver,
       playground: true,
       uploads: false,
@@ -28,7 +28,7 @@ import { T } from './libs/types/common';
     }), ComponentsModule,
      DatabaseModule
   ], 
-  controllers: [AppController],
-  providers: [AppService, AppResolver],
+  controllers: [AppController], // Rest API server sifatida ham run buladi
+  providers: [AppService, AppResolver], //GraphQL  API server sifatida ham run buladi
 })
 export class AppModule {}
