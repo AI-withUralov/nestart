@@ -27,24 +27,17 @@ export class MemberResolver {
 
   @Mutation(() => String)
   public async updateMember(): Promise<string> {
-    try {
         console.log('Mutation: updateMember');
         return this.memberService.updateMember();
-      } catch (err) {
-        console.log('Error, updateMember:', err);
-        throw new InternalServerErrorException(err);
-      }
+
   }
 
   @Query(() => String)
   public async getMember(): Promise<string> {
-    try {
+
         console.log('Query: getMember');
         return this.memberService.getMember();
-      } catch (err) {
-        console.log('Error, getMember:', err);
-        throw new InternalServerErrorException(err);
-      }
+
   }
 }
 
