@@ -1,8 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MemberService } from './member.service';
 import { InternalServerErrorException, UseGuards} from '@nestjs/common';
-import { LoginInput, MemberInput } from '../../libs/dto/member/member.inputs';
-import { Member } from '../../libs/dto/member/member';
+import { AgentsInquiry, LoginInput, MemberInput } from '../../libs/dto/member/member.inputs';
+import { Member, Members } from '../../libs/dto/member/member';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -51,18 +51,25 @@ export class MemberResolver {
   // Authenticated
   @UseGuards(AuthGuard) // requestni kim amalga oshiryabdi tekshiradi
   @Mutation(() => Member)
-public async updateMember( @Args('input') input: MemberUpdate,  @AuthMember('_id') memberId: ObjectId): Promise<Member> {
+  public async updateMember( @Args('input') input: MemberUpdate,  @AuthMember('_id') memberId: ObjectId): Promise<Member> {
   console.log('Mutation: updateMember');
   delete input._id; // bundan maqsa biz ID ni yuqoridagi memberId dan olamiz
   return this.memberService.updateMember(memberId,input);
 }
 
-@UseGuards(WithoutGuard)
-@Query(() => Member)
-public async getMember(@Args('memberId') input: string, @AuthMember('_id') memberId: ObjectId): Promise<Member> {
+  @UseGuards(WithoutGuard)
+  @Query(() => Member)
+  public async getMember(@Args('memberId') input: string, @AuthMember('_id') memberId: ObjectId): Promise<Member> {
   console.log('Query: getMember');
   const targetId = shapeIntoMongoObjectId(input);
   return this.memberService.getMember(memberId,targetId);
+}
+
+@UseGuards(WithoutGuard)
+@Query(() => Members)
+public async getAgents( @Args('input') input: AgentsInquiry, @AuthMember('_id') memberId: ObjectId,): Promise<Members> {
+  console.log('Query: getAgents');
+  return this.memberService.getAgents(memberId, input);
 }
 
 
