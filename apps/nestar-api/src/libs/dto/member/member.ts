@@ -1,6 +1,8 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { ObjectId } from 'mongoose';
-import { MemberAuthType, MemberStatus, MemberType } from '../../enums/member.enum';
+import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { ObjectId } from "mongoose";
+import { MemberAuthType, MemberStatus, MemberType } from "../../enums/member.enum";
+
+
 
 @ObjectType()
 export class Member {
@@ -24,16 +26,16 @@ export class Member {
 
     memberPassword?: string;
 
-    @Field(() => String, { nullable: true })
+    @Field(() => String, {nullable: true})
     memberFullName?: string;
 
     @Field(() => String)
     memberImage: string;
 
-    @Field(() => String, { nullable: true })
+    @Field(() => String, {nullable: true})
     memberAddress?: string;
 
-    @Field(() => String, { nullable: true })
+    @Field(() => String, {nullable: true})
     memberDesc?: string;
 
     @Field(() => Int)
@@ -69,30 +71,30 @@ export class Member {
     @Field(() => Int)
     memberBlocks: number;
 
-    @Field(() => Date, { nullable: true })
-    deletedAt: Date;
+    @Field(() => Date, {nullable: true})
+    deletedAt?: Date;
 
     @Field(() => Date)
     createdAt: Date;
 
-    @Field(() => Date)
-    updatedAt: Date;
+    @Field(() => Date, {nullable: true})
+    updatedAt?: Date;
 
     @Field(() => String, {nullable: true})
-    accessToken?:string
+    accessToken?: string;
 }
 
 @ObjectType()
 export class TotalCounter {
-  @Field(() => Int, { nullable: true })
-  total: number;
+    @Field(() => Int, {nullable: true})
+    total: number
 }
 
 @ObjectType()
 export class Members {
-  @Field(() => [Member])
-  list: Member[];
+    @Field(() => [Member])
+    list: Member[];
 
-  @Field(() => TotalCounter, { nullable: true })
-  metaCounter: TotalCounter[];
+    @Field(() => [TotalCounter], {nullable: true})
+    metaCounter: TotalCounter[];
 }
