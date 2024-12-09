@@ -12,6 +12,9 @@ import { MemberUpdate } from '../../libs/dto/member/member.update';
 
 @Injectable()
 export class MemberService {
+  findMemberById(targetId: any): Member | PromiseLike<Member> {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectModel("Member") private readonly memberModel: Model<Member>,
     private authService: AuthService,
@@ -72,9 +75,20 @@ public async updateMember(memberId: ObjectId, input: MemberUpdate): Promise<Memb
 }
 
 
-  public async getMember(): Promise<string> {
-    return 'getMember executed!';
+public async getMember(targetId: ObjectId): Promise<Member> {
+  const search = {
+    _id: targetId,
+    memberStatus: {
+      $in: [MemberStatus.ACTIVE, MemberStatus.BLOCK],
+    },
+  };
+  const targetMember = await this.memberModel.findOne(search).exec();
+  if (!targetMember) {
+    throw new InternalServerErrorException(Message.NO_DATA_FOUND);
   }
+  return targetMember;
+}
+
 
   public async getAllMembersByAdmin(): Promise<string> {
     return 'getAllMembersByAdmin executed!';
