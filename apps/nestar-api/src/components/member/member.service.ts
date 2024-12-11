@@ -243,7 +243,7 @@ return url;
 @UseGuards(AuthGuard)
 @Mutation((returns) => [String])
 public async imagesUploader(
-	@Args('files', { type: () => [GraphQLUpload] })
+	@Args('files', { type: () => [GraphQLUpload]})
 files: Promise<FileUpload>[],
 @Args('target') target: String,
 ): Promise<string[]> {
@@ -255,6 +255,8 @@ files: Promise<FileUpload>[],
 			const { filename, mimetype, encoding, createReadStream } = await img;
 
 			const validMime = validMimeTypes.includes(mimetype);
+
+      console.log("validMime", validMime)
 			if (!validMime) throw new Error(Message.PROVIDE_ALLOWED_FORMAT);
 
 			const imageName = getSerialForImage(filename);
