@@ -54,7 +54,7 @@ export class MemberResolver {
   public async updateMember( @Args('input') input: MemberUpdate,  @AuthMember('_id') memberId: ObjectId): Promise<Member> {
   console.log('Mutation: updateMember');
   delete input._id; // bundan maqsa biz ID ni yuqoridagi memberId dan olamiz
-  return this.memberService.updateMember(memberId,input);
+  return await this.memberService.updateMember(memberId,input);
 }
 
   @UseGuards(WithoutGuard)
