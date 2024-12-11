@@ -15,10 +15,12 @@ import { createWriteStream } from 'fs';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { Args, Mutation } from '@nestjs/graphql';
 import { getSerialForImage, validMimeTypes } from '../../libs/config';
+import { StatisticModifier } from '../../libs/types/common';
 
 
 @Injectable()
 export class MemberService {
+
   findMemberById(targetId: any): Member | PromiseLike<Member> {
     throw new Error('Method not implemented.');
   }
@@ -281,4 +283,13 @@ files: Promise<FileUpload>[],
 	return uploadedImages;
 }
 
+
+public async memberStatsEditor(input: StatisticModifier): Promise<Member> {
+  console.log('executd!');
+  
+  const {_id, targetKey, modifier} = input;
+  return await this.memberModel
+  .findOneAndUpdate(_id, {$inc: {[targetKey]: modifier}}, {new: true})
+  .exec();
+}
 }

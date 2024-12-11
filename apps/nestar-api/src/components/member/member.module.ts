@@ -9,6 +9,7 @@ import { ViewModule } from '../view/view.module';
 
 @Module({
   imports: [MongooseModule.forFeature([{name: "Member", schema: MemberSchema}]), AuthModule, ViewModule],
-  providers: [MemberResolver, MemberService, ViewModule]
+  providers: [MemberResolver, MemberService, ViewModule],
+  exports: [MemberService]
 })
 export class MemberModule {}
