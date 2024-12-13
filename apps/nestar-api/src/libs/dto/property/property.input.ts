@@ -213,7 +213,7 @@ export class PropertyInput {
     }
 
     @InputType()
-    export class ALlPropertiesInq {
+    export class AllPropertiesInquery {
         @IsNotEmpty()
         @Min(1)
         @Field(() => Int)
