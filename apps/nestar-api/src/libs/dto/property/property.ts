@@ -1,6 +1,8 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { ObjectId } from "mongoose";
 import { PropertyLocation, PropertyStatus, PropertyType } from "../../enums/property.enum";
+import { Member } from "../../dto/member/member";
+
 
 
 @ObjectType()
@@ -23,10 +25,10 @@ export class Property {
     @Field(() => String)
     propertyTitle: string;
 
-    @Field(() => Int)
+    @Field(() => Number)
     propertyPrice: number;
 
-    @Field(() => Int)
+    @Field(() => Number)
     propertySquare: number;
 
     @Field(() => Int)
@@ -76,4 +78,7 @@ export class Property {
 
     @Field(() => Date, {nullable: true})
     updatedAt?: Date;
-} 
+
+    @Field(() => Member, {nullable: true})
+    memberData?: Member;
+}
