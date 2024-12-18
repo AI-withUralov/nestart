@@ -28,15 +28,16 @@ export class BoardArticleResolver {
     }
 
     @UseGuards(WithoutGuard)
-    @Query((returns) => BoardArticle)
+    @Query(() => BoardArticle)
     public async getBoardArticle(
+    @Args('articleId') input: string,
     @AuthMember('_id') memberId: ObjectId,
-    @Args('input') input: string, 
     ): Promise<BoardArticle> {
-    console.log('Query: getProperty');
-    const articleId = shapeIntoMongoObjectId(input);
+    console.log("Query: getBoardArticle");
+    const articleId = shapeIntoMongoObjectId(input); // Fixed typo here
     return await this.boardArticleService.getBoardArticle(memberId, articleId);
-    }
+}
+
 
     @UseGuards(AuthGuard)
     @Mutation(() => BoardArticle)
