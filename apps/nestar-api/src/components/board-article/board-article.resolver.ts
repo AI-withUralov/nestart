@@ -65,6 +65,17 @@ export class BoardArticleResolver {
     }
 
 
+    @UseGuards(AuthGuard)
+        @Mutation(() => BoardArticle)
+        public async likeTargetArticle(
+          @Args('articleId') input: string,
+          @AuthMember('_id') memberId: ObjectId,
+        ): Promise<BoardArticle> {
+          console.log('Mutation: LikeTargetArticle');
+          const likeRefId = shapeIntoMongoObjectId(input);
+          return await this.boardArticleService.likeTargetArticle(memberId, likeRefId);
+        }
+
     //** ADMIN */
 
     @Roles(MemberType.ADMIN)
