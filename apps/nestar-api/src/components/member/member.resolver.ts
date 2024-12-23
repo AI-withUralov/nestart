@@ -55,7 +55,8 @@ export class MemberResolver {
   // Authenticated
   @UseGuards(AuthGuard) // requestni kim amalga oshiryabdi tekshiradi
   @Mutation(() => Member)
-  public async updateMember( @Args('input') input: MemberUpdate,  @AuthMember('_id') memberId: ObjectId): Promise<Member> {
+  public async updateMember( @Args('input') input: MemberUpdate,  
+  @AuthMember('_id') memberId: ObjectId): Promise<Member> {
   console.log('Mutation: updateMember');
   delete input._id; // bundan maqsa biz ID ni yuqoridagi memberId dan olamiz
   return await this.memberService.updateMember(memberId,input);
@@ -63,7 +64,8 @@ export class MemberResolver {
 
   @UseGuards(WithoutGuard)
   @Query(() => Member)
-  public async getMember(@Args('memberId') input: string, @AuthMember('_id') memberId: ObjectId): Promise<Member> {
+  public async getMember(@Args('memberId') input: string, 
+  @AuthMember('_id') memberId: ObjectId): Promise<Member> {
   console.log('Query: getMember');
   const targetId = shapeIntoMongoObjectId(input);
   return this.memberService.getMember(memberId,targetId);
@@ -71,7 +73,8 @@ export class MemberResolver {
 
 @UseGuards(WithoutGuard)
 @Query(() => Members)
-public async getAgents( @Args('input') input: AgentsInquiry, @AuthMember('_id') memberId: ObjectId,): Promise<Members> {
+public async getAgents( @Args('input') input: AgentsInquiry, 
+@AuthMember('_id') memberId: ObjectId,): Promise<Members> {
   console.log('Query: getAgents');
   return this.memberService.getAgents(memberId, input);
 }
