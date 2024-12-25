@@ -1,7 +1,7 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { BatchService } from './batch.service';
 import { Cron, Timeout } from '@nestjs/schedule';
-import { BATCH_ROLLBACK, BATCH_TOP_PROPERTIES } from './database/lib/config';
+import { BATCH_ROLLBACK, BATCH_TOP_PROPERTIES } from './lib/config';
 
 @Controller()
 export class BatchController {
