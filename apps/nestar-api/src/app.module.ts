@@ -8,6 +8,7 @@ import { AppResolver } from './app.resolver';
 import { ComponentsModule } from './components/components.module';
 import { DatabaseModule } from './database/database.module';
 import { T } from './libs/types/common';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports:[
@@ -26,7 +27,8 @@ import { T } from './libs/types/common';
         return graphQLFormattedError; // return qilmasa server qotib qoladi 
       }
     }), ComponentsModule,
-     DatabaseModule
+     DatabaseModule,
+     SocketModule
   ], 
   controllers: [AppController], // Rest API server sifatida ham run buladi
   providers: [AppService, AppResolver], //GraphQL  API server sifatida ham run buladi
