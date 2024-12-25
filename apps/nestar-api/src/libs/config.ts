@@ -136,7 +136,7 @@ export const lookupFavorite = {
     },
 };
 
-export const lookupVisited = {
+export const lookupVisit = {
     $lookup: {
         from: 'members',
         localField: 'visitedProperty.memberId',
