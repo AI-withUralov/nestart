@@ -7,10 +7,12 @@ export class AuthGuard implements CanActivate {
 	constructor(private authService: AuthService) {}
 
 	async canActivate(context: ExecutionContext | any): Promise<boolean> {
+		// bu yerda "any" GRAPHQL va boshqa turdagi request typelar uchun ishlatilgan
 		console.info('--- @guard() Authentication [AuthGuard] ---');
 
 		if (context.contextType === 'graphql') {
 			const request = context.getArgByIndex(2).req;
+			/// resolverdagi 3 indexdagi argumentni oladi
 
 			const bearerToken = request.headers.authorization;
 			if (!bearerToken) throw new BadRequestException(Message.TOKEN_NOT_EXIST);

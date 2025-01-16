@@ -20,7 +20,8 @@ export class AuthService {
 
   public async createToken(member: Member) : Promise<string> {
     console.log("member", member)
-    const payload : T = {};
+    const payload : T = {}; 
+    /// gets member's raw data in object
     Object.keys(member['_doc'] ? member['_doc'] : member).map((ele) => {
       payload[`${ele}`] = member[`${ele}`];
     });
