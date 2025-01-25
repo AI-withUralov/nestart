@@ -25,6 +25,7 @@ import { SocketModule } from './socket/socket.module';
 					code: error?.extensions.code,
 					message: error?.extensions?.exception?.message || error?.extensions?.response?.message || error?.message,
 				};
+				console.dir(error, { depth: null });
 				console.log('GRAPHQL GLOBAL ERROR:', graphQLFormattedError);
 				return graphQLFormattedError; // return qilmasa server qotib qoladi
 			},

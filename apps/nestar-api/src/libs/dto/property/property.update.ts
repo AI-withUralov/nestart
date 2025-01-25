@@ -32,7 +32,6 @@ export class PropertyUpdate {
 	propertyTitle?: string;
 
 	@IsOptional()
-	@Length(3, 100)
 	@Field(() => Number, { nullable: true })
 	propertyPrice?: number;
 
