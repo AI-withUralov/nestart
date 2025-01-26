@@ -4,7 +4,7 @@ import { Model, ObjectId, Schema } from 'mongoose';
 import { Properties, Property } from '../../libs/dto/property/property';
 import {
 	AgentPropertiesInquiry,
-	AllPropertiesInquery,
+	AllPropertiesInquiry,
 	OrdinaryInquiry,
 	PropertiesInquiry,
 	PropertyInput,
@@ -211,7 +211,7 @@ export class PropertyService {
 		return result;
 	}
 
-	public async getAllPropertiesByAdmin(memberId: ObjectId, input: AllPropertiesInquery): Promise<Properties> {
+	public async getAllPropertiesByAdmin(memberId: ObjectId, input: AllPropertiesInquiry): Promise<Properties> {
 		const { propertyStatus, propertyLocationList } = input.search;
 
 		const match: T = {};

@@ -1,32 +1,73 @@
 import { Logger } from '@nestjs/common';
-import {
-  OnGatewayInit,
-  SubscribeMessage,
-  WebSocketGateway,
-} from '@nestjs/websockets';
+import { OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'ws';
+import * as WebSocket from 'ws';
+
+interface MessagePayload {
+	event: string;
+	text: string;
+}
+
+interface InfoPayload {
+	event: string;
+	totalClients: number;
+}
 
 @WebSocketGateway({ transports: ['websocket'], secure: false })
 export class SocketGateway implements OnGatewayInit {
-  private logger = new Logger('SocketEventsGateway'); /// Terminalda kurish mumkun
-  private summaryClient: number = 0;
+	private logger = new Logger('SocketEventsGateway'); /// Terminalda kurish mumkun
+	private summaryClient: number = 0;
 
-  public afterInit(server: Server) {
-    this.logger.log(`WebSocket Server Initialized total: ${this.summaryClient}`);  /// /// Terminalda kurish mumkun
-  }
+	@WebSocketServer()
+	server: Server;
 
-  handleConnection(client: WebSocket, ...args: any[]) {
-    this.summaryClient++;
-    this.logger.log(`== Client connected total: ${this.summaryClient} ==`);
-  }
+	public afterInit(server: Server) {
+		this.logger.verbose(`WebSocket Server Initialized total: ${this.summaryClient}`); /// /// Terminalda kurish mumkun
+	}
 
-  handleDisconnect(client: WebSocket) {
-    this.summaryClient--;
-    this.logger.log(`== Client disconnected left total: ${this.summaryClient} ==`);
-  }
+	handleConnection(client: WebSocket, ...args: any[]) {
+		this.summaryClient++;
+		this.logger.verbose(`== Client connected total: ${this.summaryClient} ==`);
 
-  @SubscribeMessage('message')  /// Terminalda kurish mumkun
-  public handleMessage(client: WebSocket, payload: any): string {
-    return 'Hello world!';
-  }
+		const infoMsg: InfoPayload = {
+			event: 'info',
+			totalClients: this.summaryClient,
+		};
+		this.emitMessage(infoMsg);
+	}
+
+	handleDisconnect(client: WebSocket) {
+		this.summaryClient--;
+		this.logger.verbose(`== Disconnected total: ${this.summaryClient} ==`);
+
+		const infoMsg: InfoPayload = {
+			event: 'info',
+			totalClients: this.summaryClient,
+		};
+		this.broadcastMessage(client, infoMsg);
+	}
+
+	@SubscribeMessage('message') /// Terminalda kurish mumkun
+	public async handleMessage(client: WebSocket, payload: string): Promise<void> {
+		const newMessage: MessagePayload = { event: 'message', text: payload };
+
+		this.logger.verbose(`NEW MESSAGE: ${payload}`);
+		this.emitMessage(newMessage);
+	}
+
+	private broadcastMessage(sender: WebSocket, message: InfoPayload | MessagePayload) {
+		this.server.clients.forEach((client) => {
+			if (client !== sender && client.readyState === WebSocket.OPEN) {
+				client.send(JSON.stringify(message));
+			}
+		});
+	}
+
+	private emitMessage(message: InfoPayload | MessagePayload) {
+		this.server.clients.forEach((client) => {
+			if (client.readyState === WebSocket.OPEN) {
+				client.send(JSON.stringify(message));
+			}
+		});
+	}
 }

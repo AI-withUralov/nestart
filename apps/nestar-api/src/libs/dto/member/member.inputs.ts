@@ -103,7 +103,7 @@ export class MembersInquiry {
 	limit: number;
 
 	@IsOptional()
-	@IsIn(availableMemberSorts) // Replace with the actual array or enum of valid sorts
+	@IsIn(availableMemberSorts)
 	@Field(() => String, { nullable: true })
 	sort?: string;
 
